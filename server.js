@@ -22,6 +22,7 @@ const {
   formatSms,
   formatEmail,
 } = require("./lib/enquiry");
+const { findCustomer } = require("./lib/customers");
 
 // Load a local .env file if present (deployment platforms inject env vars directly)
 try {
@@ -65,16 +66,6 @@ try {
   customers = JSON.parse(fs.readFileSync(customersPath, "utf8"));
 } catch (err) {
   console.error(`Could not read ${customersPath}: ${err.message}`);
-}
-
-function findCustomer(toNumber, agentId) {
-  const key = normalizeUkNumber(toNumber) || toNumber;
-  return (
-    customers[key] ||
-    customers[agentId] || // fallback: allow keying by Retell agent_id instead
-    customers["DEFAULT"] ||
-    null
-  );
 }
 
 // ---------------------------------------------------------------------------
@@ -258,7 +249,7 @@ app.post("/webhook/retell", async (req, res) => {
   // then do the SMS/email work.
   res.status(200).json({ received: true });
 
-  const customer = findCustomer(call.to_number, call.agent_id);
+  const customer = findCustomer(customers, call.to_number, call.agent_id);
   if (!customer) {
     logCall({
       callId: call.call_id,

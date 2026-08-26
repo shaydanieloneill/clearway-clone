@@ -114,6 +114,24 @@ test("extractEnquiry does not flag a normal transfer as cut short", () => {
   assert.equal(e.cutShort, false);
 });
 
+test("isValidUkPostcodeFormat rejects a pure-digit string (regression: real call gave '894432')", () => {
+  assert.equal(isValidUkPostcodeFormat("894432"), false);
+  assert.equal(isValidUkPostcodeFormat("89 4432"), false);
+});
+
+test("extractEnquiry recognizes urgency from string values, not just booleans", () => {
+  for (const value of ["true", "yes", "TRUE", "Yes"]) {
+    const e = extractEnquiry(
+      baseCall({ call_analysis: { custom_analysis_data: { is_urgent: value } } })
+    );
+    assert.equal(e.urgent, true, `expected urgency from string value "${value}"`);
+  }
+  const e = extractEnquiry(
+    baseCall({ call_analysis: { custom_analysis_data: { is_urgent: "false" } } })
+  );
+  assert.equal(e.urgent, false);
+});
+
 test("extractEnquiry recognizes urgency from multiple field name spellings", () => {
   for (const key of ["is_urgent", "urgent", "urgency", "emergency"]) {
     const e = extractEnquiry(
