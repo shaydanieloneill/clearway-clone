@@ -1,0 +1,21 @@
+{
+  "name": "clearway-retell-sms-bridge",
+  "version": "1.0.0",
+  "description": "Clearway AI — receives Retell post-call webhooks and texts/emails the enquiry to the tradesperson",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test \"test/*.test.js\"",
+    "test:webhook": "node scripts/send-test.js",
+    "test:webhook:urgent": "node scripts/send-test.js urgent",
+    "test:webhook:partial": "node scripts/send-test.js partial"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "retell-sdk": "^4.36.0",
+    "twilio": "^5.5.1"
+  }
+}

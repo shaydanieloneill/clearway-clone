@@ -1,0 +1,21 @@
+{
+  "_comment": "Maps the Twilio number a caller dialled (E.164, +44...) to the tradesperson who should get the SMS/email. You can also key an entry by Retell agent_id. DEFAULT is used when no match is found — point it at yourself so nothing is ever lost.",
+
+  "+447898115981": {
+    "businessName": "Hartley Plumbing & Heating",
+    "smsTo": "+447930903976",
+    "emailTo": "lukee0301@gmail.com"
+  },
+
+  "+447575659157": {
+    "businessName": "Shay's Electrics",
+    "smsTo": "+447930903976",
+    "emailTo": "lukee0301@gmail.com"
+  },
+
+  "DEFAULT": {
+    "businessName": "Clearway AI (unmapped number)",
+    "smsTo": "+447930903976",
+    "emailTo": "lukee0301@gmail.com"
+  }
+}
